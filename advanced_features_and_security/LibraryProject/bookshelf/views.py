@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, redirect
 from .models import Book
 from .forms import SearchForm
+from .forms import ExampleForm
 @permission_required('bookshelf.can_view', raise_exception=True)
 def book_list(request):
     books = Book.objects.all()  
@@ -22,3 +23,7 @@ def edit_book(request, book_id):
 def delete_book(request, book_id):
     # كود حذف كتاب
     pass
+
+def example_view(request):
+    form = ExampleForm()
+    return render(request, "bookshelf/form_example.html", {"form": form})
