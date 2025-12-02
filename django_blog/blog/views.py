@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import logout as django_logout
 from .forms import RegisterForm, ProfileUpdateForm
+from django.contrib.auth.views import LoginView, LogoutView
 
 # -------------------
 #    Home Page
@@ -64,3 +65,24 @@ def profile_view(request):
         form = ProfileUpdateForm(instance=request.user)
 
     return render(request, "auth/profile.html", {"form": form})
+def register(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect("profile")
+    else:
+        form = RegisterForm()
+
+    return render(request, "register.html", {"form": form})
+@login_required
+def profile(request):
+    user = request.user
+    if request.method == "POST":
+        new_email = request.POST.get("email")
+        user.email = new_email
+        user.save()
+        return redirect("profile")
+
+    return render(request, "profile.html", {"user": user})
