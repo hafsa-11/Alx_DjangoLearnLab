@@ -22,6 +22,9 @@
     </main>
 
     <script src="{% static 'blog/js/main.js' %}"></script>
+    <form action="{% url 'search' %}" method="GET">
+    <input type="text" name="q" placeholder="Search posts..." />
+</form>
 
 </body>
 </html>
