@@ -1,0 +1,10 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+<h2>Delete Post</h2>
+<p>Are you sure you want to delete "{{ object.title }}"?</p>
+
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit">Yes, delete</button>
+</form>
