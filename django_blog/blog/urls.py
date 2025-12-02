@@ -2,8 +2,11 @@ from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 from . import views
 from .views import (
-    PostListView, PostDetailView,
-    PostCreateView, PostUpdateView, PostDeleteView
+    PostListView,
+    PostDetailView,
+    PostCreateView,
+    PostUpdateView,
+    PostDeleteView,
 )
 
 urlpatterns = [
@@ -12,10 +15,10 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(template_name="logout.html"), name="logout"),
     path("register/", views.register, name="register"),
     path("profile/", views.profile, name="profile"),
-     path("posts/", PostListView.as_view(), name="post_list"),
-    path("posts/new/", PostCreateView.as_view(), name="post_create"),
-    path("posts/<int:pk>/", PostDetailView.as_view(), name="post_detail"),
-    path("posts/<int:pk>/edit/", PostUpdateView.as_view(), name="post_edit"),
-    path("posts/<int:pk>/delete/", PostDeleteView.as_view(), name="post_delete"),
+    path("post/", PostListView.as_view(), name="post_list"),
+    path("post/new/", PostCreateView.as_view(), name="post_create"),
+    path("post/<int:pk>/", PostDetailView.as_view(), name="post_detail"),
+    path("post/<int:pk>/update/", PostUpdateView.as_view(), name="post_update"),
+    path("post/<int:pk>/delete/", PostDeleteView.as_view(), name="post_delete"),
  
 ]
