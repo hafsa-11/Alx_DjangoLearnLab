@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from notifications.models import Notification
 from django.contrib.contenttypes.models import ContentType
+from django.shortcuts import get_object_or_404
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
