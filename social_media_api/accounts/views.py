@@ -31,6 +31,7 @@ class LoginView(APIView):
 class FollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
     queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
 
     def post(self, request, user_id):
         target_user = get_object_or_404(User, id=user_id)
