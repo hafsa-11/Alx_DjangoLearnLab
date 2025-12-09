@@ -4,6 +4,8 @@ from .serializers import PostSerializer, CommentSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from notifications.models import Notification
+from django.contrib.contenttypes.models import ContentType
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
@@ -41,3 +43,37 @@ def user_feed(request):
 
     serializer = PostSerializer(posts, many=True)
     return Response(serializer.data)
+class LikePostView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+
+        if Like.objects.filter(user=request.user, post=post).exists():
+            return Response({"error": "You already liked this post"}, status=400)
+
+        Like.objects.create(user=request.user, post=post)
+
+        notification
+        Notification.objects.create(
+            recipient=post.author,
+            actor=request.user,
+            verb="liked your post",
+            target=post,
+        )
+
+        return Response({"message": "Post liked successfully"}, status=200)
+
+
+class UnlikePostView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+
+        like = Like.objects.filter(user=request.user, post=post).first()
+        if not like:
+            return Response({"error": "You have not liked this post"}, status=400)
+
+        like.delete()
+        return Response({"message": "Post unliked successfully"}, status=200)
